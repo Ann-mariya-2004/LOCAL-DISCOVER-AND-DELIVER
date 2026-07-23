@@ -211,18 +211,18 @@
         <p class="subtitle">Join LDD and access local services.</p>
 
         <input type="text" id="fullName" name="fullName" required>
-        <input type="email" id="registerEmail" placeholder="Email Address" required>
-        <input type="tel" id="phone" placeholder="Phone Number" required>
-
-        <select id="role" required>
+        <input type="email" id="registerEmail" name="email" placeholder="Email Address" required>
+        <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
+        <input type="text" id="address" name="address" placeholder="Address" required>
+        <select id="role" name="role" required>
           <option value="">Select Account Type</option>
           <option value="Customer">Customer</option>
           <option value="Vendor">Vendor</option>
           <option value="Delivery Partner">Delivery Partner</option>
         </select>
 
-        <input type="password" id="registerPassword" placeholder="Create Password" required>
-        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+        <input type="password" id="registerPassword" name="password" placeholder="Create Password" required>
+        <input type="password" id="confirmPassword" name="confirm_password" placeholder="Confirm Password" required>
 
         <div class="checkbox-row">
           <input type="checkbox" id="terms" required>
@@ -264,22 +264,18 @@
     }
 
     function registerUser(event) {
-      event.preventDefault();
 
-      const password = document.getElementById("registerPassword").value;
-      const confirmPassword = document.getElementById("confirmPassword").value;
+    const password = document.getElementById("registerPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
 
-      if (password !== confirmPassword) {
+    if (password !== confirmPassword) {
+        event.preventDefault();
         alert("Passwords do not match.");
         return;
-      }
-
-      const name = document.getElementById("fullName").value;
-      alert("Registration successful for: " + name);
-
-      // Later, send form data to a PHP registration page.
-      showForm("login");
     }
+
+    
+}
   </script>
 
 </body>
