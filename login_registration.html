@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LDD | Login & Registration</title>
-
   <style>
     * {
       box-sizing: border-box;
@@ -207,11 +206,11 @@
       </form>
 
       <!-- Registration Form -->
-      <form id="registerForm" class="form" onsubmit="registerUser(event)">
+      <form action="backend/register.php" method="POST" id="registerForm" class="form" onsubmit="registerUser(event)">
         <h2>Create Account</h2>
         <p class="subtitle">Join LDD and access local services.</p>
 
-        <input type="text" id="fullName" placeholder="Full Name" required>
+        <input type="text" id="fullName" name="fullName" required>
         <input type="email" id="registerEmail" placeholder="Email Address" required>
         <input type="tel" id="phone" placeholder="Phone Number" required>
 
