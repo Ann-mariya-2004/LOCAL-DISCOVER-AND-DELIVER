@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LDD | Food Order</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f6f7f8;
+      color: #222;
+    }
+
+    header {
+      padding: 15px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f766e;
+      color: white;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #facc15;
+    }
+
+    nav a {
+      margin-left: 20px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .restaurant-banner {
+      padding: 38px 7%;
+      color: white;
+      background: linear-gradient(135deg, #134e4a, #0f766e);
+    }
+
+    .restaurant-banner h1 {
+      margin: 0 0 10px;
+    }
+
+    .restaurant-banner p {
+      margin: 7px 0;
+    }
+
+    .open {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      background: #dcfce7;
+      color: #166534;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 1150px;
+      margin: 30px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 25px;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #115e59;
+    }
+
+    .menu-section,
+    .cart {
+      padding: 25px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .menu-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .menu-tabs button {
+      padding: 9px 15px;
+      border: 1px solid #0f766e;
+      border-radius: 20px;
+      background: white;
+      color: #0f766e;
+      cursor: pointer;
+    }
+
+    .menu-tabs button:hover,
+    .menu-tabs button.active {
+      background: #0f766e;
+      color: white;
+    }
+
+    .food-item {
+      padding: 18px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .food-item:last-child {
+      border-bottom: none;
+    }
+
+    .food-info h3 {
+      margin: 0 0 7px;
+      font-size: 17px;
+    }
+
+    .food-info p {
+      margin: 0 0 8px;
+      color: #666;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .price {
+      color: #0f766e;
+      font-weight: bold;
+    }
+
+    .add-btn {
+      align-self: center;
+      min-width: 90px;
+      padding: 9px 12px;
+      border: none;
+      border-radius: 5px;
+      background: #0f766e;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .add-btn:hover {
+      background: #115e59;
+    }
+
+    .cart {
+      height: fit-content;
+      position: sticky;
+      top: 20px;
+    }
+
+    #cartItems {
+      margin: 18px 0;
+    }
+
+    .empty-cart {
+      color: #777;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+
+    .cart-item-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .quantity button {
+      width: 26px;
+      height: 26px;
+      border: none;
+      border-radius: 4px;
+      background: #d1fae5;
+      color: #115e59;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .quantity span {
+      margin: 0 7px;
+    }
+
+    .bill-row {
+      margin: 13px 0;
+      display: flex;
+      justify-content: space-between;
+      color: #555;
+    }
+
+    .total {
+      padding-top: 15px;
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #ddd;
+      font-size: 20px;
+      font-weight: bold;
+      color: #0f766e;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      margin-top: 20px;
+      padding: 13px;
+      border: none;
+      border-radius: 6px;
+      background: #f59e0b;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .checkout-btn:hover {
+      background: #d97706;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 18px;
+      background: #134e4a;
+      color: white;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    @media (max-width: 800px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+
+      .cart {
+        position: static;
+      }
+
+      header {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      nav a {
+        margin: 0 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">L<span>D</span>D</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#">My Orders</a>
+      <a href="login-register.html">Login</a>
+    </nav>
+  </header>
+
+  <section class="restaurant-banner">
+    <h1 id="restaurantName">Restaurant Menu</h1>
+    <p>⭐ 4.5 Rating &nbsp; | &nbsp; Indian, Chinese, Fast Food</p>
+    <p>📍 1.2 km away &nbsp; | &nbsp; 🕒 Delivery in 25–35 minutes</p>
+    <span class="open">Open Now • 24/7 Delivery Available</span>
+  </section>
+
+  <main class="container">
+
+    <section class="menu-section">
+      <h2>Menu</h2>
+
+      <div class="menu-tabs">
+        <button class="active">All</button>
+        <button>Starters</button>
+        <button>Main Course</button>
+        <button>Fast Food</button>
+        <button>Beverages</button>
+      </div>
+
+      <div class="food-item">
+        <div class="food-info">
+          <h3>Veg Burger</h3>
+          <p>Fresh vegetable patty with cheese, lettuce, and special sauce.</p>
+          <span class="price">₹80</span>
+        </div>
+        <button class="add-btn" onclick="addToCart('Veg Burger', 80)">Add</button>
+      </div>
+
+      <div class="food-item">
+        <div class="food-info">
+          <h3>Paneer Butter Masala</h3>
+          <p>Soft paneer cubes cooked in a rich and creamy tomato gravy.</p>
+          <span class="price">₹180</span>
+        </div>
+        <button class="add-btn" onclick="addToCart('Paneer Butter Masala', 180)">Add</button>
+      </div>
+
+      <div class="food-item">
+        <div class="food-info">
+          <h3>Veg Fried Rice</h3>
+          <p>Fried rice with fresh vegetables, herbs, and sauces.</p>
+          <span class="price">₹130</span>
+        </div>
+        <button class="add-btn" onclick="addToCart('Veg Fried Rice', 130)">Add</button>
+      </div>
+
+      <div class="food-item">
+        <div class="food-info">
+          <h3>Chicken Biryani</h3>
+          <p>Fragrant basmati rice served with spicy chicken and raita.</p>
+          <span class="price">₹220</span>
+        </div>
+        <button class="add-btn" onclick="addToCart('Chicken Biryani', 220)">Add</button>
+      </div>
+
+      <div class="food-item">
+        <div class="food-info">
+          <h3>French Fries</h3>
+          <p>Crispy salted potato fries served with tomato ketchup.</p>
+          <span class="price">₹70</span>
+        </div>
+        <button class="add-btn" onclick="addToCart('French Fries', 70)">Add</button>
+      </div>
+
+      <div class="food-item">
+        <div class="food-info">
+          <h3>Cold Coffee</h3>
+          <p>Chilled coffee blended with milk, ice cream, and chocolate.</p>
+          <span class="price">₹90</span>
+        </div>
+        <button class="add-btn" onclick="addToCart('Cold Coffee', 90)">Add</button>
+      </div>
+    </section>
+
+    <aside class="cart">
+      <h2>🛒 Your Cart</h2>
+
+      <div id="cartItems">
+        <p class="empty-cart">Your cart is empty.</p>
+      </div>
+
+      <div class="bill-row">
+        <span>Item Total</span>
+        <strong>₹<span id="itemTotal">0</span></strong>
+      </div>
+
+      <div class="bill-row">
+        <span>Delivery Fee</span>
+        <strong>₹<span id="deliveryFee">0</span></strong>
+      </div>
+
+      <div class="total">
+        <span>Total</span>
+        <span>₹<span id="grandTotal">0</span></span>
+      </div>
+
+      <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+    </aside>
+
+  </main>
+
+  <footer>
+    © 2026 Local Discover and Deliver | Food delivery available 24/7
+  </footer>
+
+  <script>
+    const cart = {};
+
+    function addToCart(name, price) {
+      if (cart[name]) {
+        cart[name].quantity++;
+      } else {
+        cart[name] = { price: price, quantity: 1 };
+      }
+
+      updateCart();
+    }
+
+    function changeQuantity(name, change) {
+      cart[name].quantity += change;
+
+      if (cart[name].quantity <= 0) {
+        delete cart[name];
+      }
+
+      updateCart();
+    }
+
+    function updateCart() {
+      const cartItems = document.getElementById("cartItems");
+      const itemTotalElement = document.getElementById("itemTotal");
+      const deliveryFeeElement = document.getElementById("deliveryFee");
+      const grandTotalElement = document.getElementById("grandTotal");
+
+      const items = Object.keys(cart);
+      let itemTotal = 0;
+
+      if (items.length === 0) {
+        cartItems.innerHTML = '<p class="empty-cart">Your cart is empty.</p>';
+        itemTotalElement.textContent = 0;
+        deliveryFeeElement.textContent = 0;
+        grandTotalElement.textContent = 0;
+        return;
+      }
+
+      let cartHTML = "";
+
+      items.forEach(name => {
+        const item = cart[name];
+        const itemPrice = item.price * item.quantity;
+        itemTotal += itemPrice;
+
+        cartHTML += `
+          <div class="cart-item">
+            <div>
+              <div class="cart-item-name">${name}</div>
+              <div>₹${item.price} × ${item.quantity} = ₹${itemPrice}</div>
+            </div>
+
+            <div class="quantity">
+              <button onclick="changeQuantity('${name}', -1)">−</button>
+              <span>${item.quantity}</span>
+              <button onclick="changeQuantity('${name}', 1)">+</button>
+            </div>
+          </div>
+        `;
+      });
+
+      const deliveryFee = itemTotal > 0 ? 30 : 0;
+      const grandTotal = itemTotal + deliveryFee;
+
+      cartItems.innerHTML = cartHTML;
+      itemTotalElement.textContent = itemTotal;
+      deliveryFeeElement.textContent = deliveryFee;
+      grandTotalElement.textContent = grandTotal;
+    }
+
+    function checkout() {
+      if (Object.keys(cart).length === 0) {
+        alert("Your cart is empty. Please add food items first.");
+        return;
+      }
+
+      alert(
+        "Order ready for checkout!\n\n" +
+        "Total Amount: ₹" + document.getElementById("grandTotal").textContent
+      );
+
+      // Later, redirect to a checkout page:
+      // window.location.href = "checkout.html";
+    }
+    const params = new URLSearchParams(window.location.search);
+const restaurant = params.get("restaurant");
+
+if (restaurant) {
+  document.getElementById("restaurantName").textContent = restaurant;
+}
+  </script>
+
+</body>
+</html>

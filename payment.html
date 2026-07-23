@@ -1,0 +1,384 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LDD | Payment</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f7f8;
+      color: #222;
+    }
+
+    header {
+      padding: 15px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      background: #0f766e;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #facc15;
+    }
+
+    nav a {
+      margin-left: 20px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .page-title {
+      padding: 35px 20px;
+      text-align: center;
+      color: white;
+      background: linear-gradient(135deg, #134e4a, #0f766e);
+    }
+
+    .page-title h1 {
+      margin: 0 0 8px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 35px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1.7fr 1fr;
+      gap: 25px;
+    }
+
+    .payment-box,
+    .order-summary {
+      padding: 25px;
+      height: fit-content;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      margin-top: 0;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #ddd;
+      color: #115e59;
+    }
+
+    .method {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 12px 0;
+      padding: 16px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+
+    .method:hover,
+    .method.selected {
+      border-color: #0f766e;
+      background: #f0fdfa;
+    }
+
+    .method input {
+      width: auto;
+      accent-color: #0f766e;
+    }
+
+    .method-icon {
+      font-size: 25px;
+    }
+
+    .payment-form {
+      display: none;
+      margin-top: 20px;
+      padding-top: 8px;
+    }
+
+    .payment-form.active {
+      display: block;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 7px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline-color: #0f766e;
+      font-size: 14px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 15px 0;
+      color: #555;
+    }
+
+    .total {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid #ddd;
+      color: #0f766e;
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    .pay-button {
+      width: 100%;
+      margin-top: 25px;
+      padding: 14px;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      background: #0f766e;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .pay-button:hover {
+      background: #115e59;
+    }
+
+    .safe-note {
+      margin-top: 22px;
+      padding: 12px;
+      border-radius: 6px;
+      color: #166534;
+      background: #dcfce7;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 18px;
+      text-align: center;
+      color: white;
+      background: #134e4a;
+      font-size: 14px;
+    }
+
+    @media (max-width: 750px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      nav a {
+        margin: 0 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">L<span>D</span>D</div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#">My Orders</a>
+      <a href="login_registration.html">Login</a>
+    </nav>
+  </header>
+
+  <section class="page-title">
+    <h1>Secure Payment</h1>
+    <p>Choose a payment method to complete your order.</p>
+  </section>
+
+  <main class="container">
+
+    <section class="payment-box">
+      <h2>Payment Method</h2>
+
+      <label class="method selected">
+        <input type="radio" name="paymentMethod" value="upi"
+               checked onchange="selectPayment('upi', this)">
+        <span class="method-icon">📱</span>
+        <span><strong>UPI</strong><br><small>Google Pay, PhonePe, Paytm and more</small></span>
+      </label>
+
+      <label class="method">
+        <input type="radio" name="paymentMethod" value="card"
+               onchange="selectPayment('card', this)">
+        <span class="method-icon">💳</span>
+        <span><strong>Credit / Debit Card</strong><br><small>Visa, Mastercard, RuPay</small></span>
+      </label>
+
+      <label class="method">
+        <input type="radio" name="paymentMethod" value="cod"
+               onchange="selectPayment('cod', this)">
+        <span class="method-icon">💵</span>
+        <span><strong>Cash on Delivery</strong><br><small>Pay when the order arrives</small></span>
+      </label>
+
+      <!-- UPI Form -->
+      <div class="payment-form active" id="upiForm">
+        <label for="upiId">UPI ID</label>
+        <input type="text" id="upiId" placeholder="Example: yourname@upi">
+      </div>
+
+      <!-- Card Form -->
+      <div class="payment-form" id="cardForm">
+        <label for="cardName">Card Holder Name</label>
+        <input type="text" id="cardName" placeholder="Name on card">
+
+        <label for="cardNumber">Card Number</label>
+        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456"
+               maxlength="19">
+
+        <div class="row">
+          <div>
+            <label for="expiry">Expiry Date</label>
+            <input type="text" id="expiry" placeholder="MM/YY" maxlength="5">
+          </div>
+
+          <div>
+            <label for="cvv">CVV</label>
+            <input type="password" id="cvv" placeholder="123" maxlength="3">
+          </div>
+        </div>
+      </div>
+
+      <!-- COD Form -->
+      <div class="payment-form" id="codForm">
+        <p>💵 You can pay <strong>₹250</strong> in cash when your order is delivered.</p>
+      </div>
+
+      <button class="pay-button" onclick="makePayment()">Pay ₹250</button>
+
+      <div class="safe-note">
+        🔒 Your payment information is protected. This is a frontend demonstration;
+        no real transaction will be made.
+      </div>
+    </section>
+
+    <aside class="order-summary">
+      <h2>Order Summary</h2>
+
+      <div class="summary-row">
+        <span>Veg Burger × 1</span>
+        <strong>₹80</strong>
+      </div>
+
+      <div class="summary-row">
+        <span>Veg Fried Rice × 1</span>
+        <strong>₹130</strong>
+      </div>
+
+      <div class="summary-row">
+        <span>Delivery Charge</span>
+        <strong>₹40</strong>
+      </div>
+
+      <div class="total">
+        <span>Total</span>
+        <span>₹250</span>
+      </div>
+    </aside>
+
+  </main>
+
+  <footer>
+    © 2026 Local Discover and Deliver | Available 24/7
+  </footer>
+
+  <script>
+    function selectPayment(method, selectedElement) {
+      document.querySelectorAll(".payment-form").forEach(form => {
+        form.classList.remove("active");
+      });
+
+      document.querySelectorAll(".method").forEach(item => {
+        item.classList.remove("selected");
+      });
+
+      document.getElementById(method + "Form").classList.add("active");
+      selectedElement.parentElement.classList.add("selected");
+
+      const payButton = document.querySelector(".pay-button");
+
+      if (method === "cod") {
+        payButton.textContent = "Place Order";
+      } else {
+        payButton.textContent = "Pay ₹250";
+      }
+    }
+
+    function makePayment() {
+      const paymentMethod = document.querySelector(
+        'input[name="paymentMethod"]:checked'
+      ).value;
+
+      if (paymentMethod === "upi") {
+        const upiId = document.getElementById("upiId").value;
+
+        if (upiId === "") {
+          alert("Please enter your UPI ID.");
+          return;
+        }
+
+        alert("UPI payment of ₹250 successful! Your order has been placed.");
+      }
+
+      if (paymentMethod === "card") {
+        const cardNumber = document.getElementById("cardNumber").value;
+        const cardName = document.getElementById("cardName").value;
+
+        if (cardName === "" || cardNumber.length < 12) {
+          alert("Please enter valid card details.");
+          return;
+        }
+
+        alert("Card payment of ₹250 successful! Your order has been placed.");
+      }
+
+      if (paymentMethod === "cod") {
+        alert("Order placed successfully! Please pay ₹250 on delivery.");
+      }
+
+      // Later redirect to the order tracking page:
+      // window.location.href = "order-tracking.html";
+    }
+  </script>
+
+</body>
+</html>

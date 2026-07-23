@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LDD | Local Discover & Deliver</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f7f8fa;
+      color: #222;
+    }
+
+    header {
+      background: #0f766e;
+      color: white;
+      padding: 15px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #facc15;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 15px;
+    }
+
+    nav a:hover {
+      color: #facc15;
+    }
+
+    .hero {
+      min-height: 430px;
+      padding: 80px 7%;
+      color: white;
+      text-align: center;
+      background: linear-gradient(rgba(15, 118, 110, 0.88), rgba(54, 139, 50, 0.88)),
+        url("https://www.milesweb.in/blog/wp-content/uploads/2015/06/ecommerce-stores-hosted-vs-licensed-shopping-cart-solutions-min-1.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    .search-box {
+      background: white;
+      max-width: 700px;
+      margin: auto;
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-box input,
+    .search-box select {
+      border: 1px solid #ddd;
+      padding: 13px;
+      border-radius: 5px;
+      font-size: 15px;
+      flex: 1;
+      outline: none;
+    }
+
+    .search-box button {
+      border: none;
+      background: #facc15;
+      padding: 13px 24px;
+      border-radius: 5px;
+      color: #222;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .section {
+      padding: 55px 7%;
+      text-align: center;
+    }
+
+    .section h2 {
+      color: #0f766e;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    .section p {
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      max-width: 1050px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      padding: 30px 20px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      margin-bottom: 12px;
+      color: #222;
+    }
+
+    .card p {
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .card button {
+      border: none;
+      padding: 10px 18px;
+      background: #0f766e;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .card button:hover {
+      background: #115e59;
+    }
+
+    .how-it-works {
+      background: #e6fffb;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      max-width: 1000px;
+      margin: auto;
+      gap: 25px;
+    }
+
+    .step {
+      padding: 20px;
+    }
+
+    .step-number {
+      width: 45px;
+      height: 45px;
+      margin: auto auto 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background: #0f766e;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    footer {
+      background: #134e4a;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      nav a {
+        margin: 0 8px;
+      }
+
+      .hero h1 {
+        font-size: 30px;
+      }
+
+      .search-box {
+        flex-direction: column;
+      }
+
+      .categories,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">L<span>D</span>D</div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#services">Services</a>
+      <a href="#how">How It Works</a>
+      <a href="login_registration.html">Login</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>24/7 Hyperlocal Service Platform</h1>
+    <h1>Discover Local. Get It Delivered.</h1>
+    <p>Print documents, order food, and buy groceries from nearby stores.</p>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search print shops, restaurants or groceries">
+      
+      <select id="location">
+        <option>Select your location</option>
+        <option>Near Me</option>
+
+      </select>
+
+      <button onclick="searchService()">Search</button>
+    </div>
+  </section>
+
+  <section class="section" id="services">
+    <h2>Our Services</h2>
+    <p>Everything you need from your local area, delivered to your doorstep.</p>
+
+    <div class="categories">
+      <div class="card">
+        <div class="icon">🖨️</div>
+        <h3>Print & Photocopy</h3>
+        <p>Upload your document, choose colour, paper size, copies, and get it delivered.</p>
+        <button onclick="openService('Print & Photocopy')">Explore</button>
+      </div>
+
+      <div class="card">
+        <div class="icon">🍔</div>
+        <h3>Food Delivery</h3>
+        <p>Discover nearby restaurants, browse menus, and order your favourite food.</p>
+        <button onclick="openService('Food Delivery')">Explore</button>
+      </div>
+
+      <div class="card">
+        <div class="icon">🛒</div>
+        <h3>Grocery Delivery</h3>
+        <p>Buy essential groceries from local stores and receive them quickly.</p>
+        <button onclick="openService('Grocery Delivery')">Explore</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section how-it-works" id="how">
+    <h2>How It Works</h2>
+    <p>Get local products and services in three simple steps.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Discover</h3>
+        <p>Search nearby shops, restaurants, and service providers.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Order</h3>
+        <p>Select services or products, then provide delivery details.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Receive</h3>
+        <p>Track your order and receive it at your doorstep.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Local Discover and Deliver (LDD) | Mini Project</p>
+  </footer>
+
+  <script>
+    function searchService() {
+      const searchText = document.getElementById("searchInput").value;
+      const location = document.getElementById("location").value;
+
+      if (searchText === "") {
+        alert("Please enter a service, shop, restaurant, or grocery item.");
+      } else {
+        alert("Searching for: " + searchText + "\nLocation: " + location);
+      }
+    }
+
+    function openService(serviceName) {
+      alert("Opening " + serviceName + " page...");
+    }
+  </script>
+
+</body>
+</html>

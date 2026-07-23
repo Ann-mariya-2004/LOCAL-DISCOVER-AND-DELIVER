@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LDD | Login & Registration</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0f766e, #14b8a6);
+      padding: 20px;
+    }
+
+    .container {
+      width: 900px;
+      max-width: 100%;
+      min-height: 520px;
+      display: flex;
+      overflow: hidden;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .welcome-side {
+      width: 42%;
+      color: white;
+      padding: 70px 35px;
+      background: #115e59;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .welcome-side h1 {
+      margin: 0 0 12px;
+      font-size: 35px;
+    }
+
+    .welcome-side p {
+      line-height: 1.6;
+      color: #d1fae5;
+    }
+
+    .form-side {
+      width: 58%;
+      padding: 45px 55px;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 25px;
+    }
+
+    .tabs button {
+      flex: 1;
+      padding: 13px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      color: #666;
+    }
+
+    .tabs button.active {
+      color: #0f766e;
+      border-bottom: 3px solid #0f766e;
+    }
+
+    .form {
+      display: none;
+    }
+
+    .form.active {
+      display: block;
+    }
+
+    h2 {
+      color: #134e4a;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #777;
+      margin-bottom: 22px;
+      font-size: 14px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      outline-color: #0f766e;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      margin: 12px 0;
+      color: #555;
+    }
+
+    .checkbox-row input {
+      width: auto;
+      margin: 0;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 13px;
+      margin-top: 8px;
+      border: none;
+      border-radius: 6px;
+      background: #0f766e;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background: #115e59;
+    }
+
+    .forgot {
+      display: block;
+      margin-top: 16px;
+      text-align: center;
+      font-size: 13px;
+      color: #0f766e;
+      text-decoration: none;
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        display: block;
+      }
+
+      .welcome-side, .form-side {
+        width: 100%;
+      }
+
+      .welcome-side {
+        padding: 35px 25px;
+      }
+
+      .form-side {
+        padding: 35px 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="welcome-side">
+      <h1>LDD</h1>
+      <h3>Local Discover & Deliver</h3>
+      <p>
+        Discover nearby print shops, restaurants, and grocery stores.
+        Order anytime and get it delivered to your doorstep.
+      </p>
+      <p><strong>🕒 Available 24 Hours, 7 Days a Week</strong></p>
+    </div>
+
+    <div class="form-side">
+
+      <div class="tabs">
+        <button class="tab-btn active" onclick="showForm('login')">Login</button>
+        <button class="tab-btn" onclick="showForm('register')">Register</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="form active" onsubmit="loginUser(event)">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Login to continue with LDD.</p>
+
+        <input type="email" id="loginEmail" placeholder="Email Address" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="remember">
+          <label for="remember">Remember me</label>
+        </div>
+
+        <button type="submit" class="submit-btn">Login</button>
+        <a href="index.html" class="forgot">Forgot Password?</a>
+      </form>
+
+      <!-- Registration Form -->
+      <form id="registerForm" class="form" onsubmit="registerUser(event)">
+        <h2>Create Account</h2>
+        <p class="subtitle">Join LDD and access local services.</p>
+
+        <input type="text" id="fullName" placeholder="Full Name" required>
+        <input type="email" id="registerEmail" placeholder="Email Address" required>
+        <input type="tel" id="phone" placeholder="Phone Number" required>
+
+        <select id="role" required>
+          <option value="">Select Account Type</option>
+          <option value="Customer">Customer</option>
+          <option value="Vendor">Vendor</option>
+          <option value="Delivery Partner">Delivery Partner</option>
+        </select>
+
+        <input type="password" id="registerPassword" placeholder="Create Password" required>
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="terms" required>
+          <label for="terms">I agree to the Terms and Conditions</label>
+        </div>
+
+        <button type="submit" class="submit-btn">Create Account</button>
+      </form>
+
+    </div>
+  </div>
+
+  <script>
+    function showForm(formName) {
+      document.getElementById("loginForm").classList.remove("active");
+      document.getElementById("registerForm").classList.remove("active");
+
+      document.querySelectorAll(".tab-btn").forEach(button => {
+        button.classList.remove("active");
+      });
+
+      if (formName === "login") {
+        document.getElementById("loginForm").classList.add("active");
+        document.querySelectorAll(".tab-btn")[0].classList.add("active");
+      } else {
+        document.getElementById("registerForm").classList.add("active");
+        document.querySelectorAll(".tab-btn")[1].classList.add("active");
+      }
+    }
+
+    function loginUser(event) {
+      event.preventDefault();
+
+      const email = document.getElementById("loginEmail").value;
+      alert("Login successful for: " + email);
+
+      // Later, redirect after PHP/MySQL login:
+      // window.location.href = "dashboard.php";
+    }
+
+    function registerUser(event) {
+      event.preventDefault();
+
+      const password = document.getElementById("registerPassword").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+      }
+
+      const name = document.getElementById("fullName").value;
+      alert("Registration successful for: " + name);
+
+      // Later, send form data to a PHP registration page.
+      showForm("login");
+    }
+  </script>
+
+</body>
+</html>

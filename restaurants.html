@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LDD | Restaurants</title>
+
+  <style>
+    * { box-sizing: border-box; font-family: Arial, sans-serif; }
+
+    body {
+      margin: 0;
+      background: #f6f7f8;
+      color: #222;
+    }
+
+    header {
+      padding: 15px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f766e;
+      color: white;
+    }
+
+    .logo { font-size: 24px; font-weight: bold; }
+    .logo span { color: #facc15; }
+
+    nav a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+    }
+
+    .hero {
+      padding: 40px 7%;
+      text-align: center;
+      color: white;
+      background: linear-gradient(135deg, #134e4a, #0f766e);
+    }
+
+    .hero h1 { margin-top: 0; }
+
+    .search-box {
+      max-width: 650px;
+      display: flex;
+      margin: 25px auto 0;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 6px 0 0 6px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .search-box button {
+      padding: 14px 24px;
+      border: none;
+      border-radius: 0 6px 6px 0;
+      color: #222;
+      background: #facc15;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 35px auto;
+      padding: 0 20px;
+    }
+
+    .restaurant-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .restaurant-card {
+      overflow: hidden;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+    }
+
+    .restaurant-image {
+      height: 150px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 60px;
+      background: #d1fae5;
+    }
+
+    .restaurant-details {
+      padding: 18px;
+    }
+
+    .restaurant-details h3 {
+      margin: 0 0 10px;
+      color: #115e59;
+    }
+
+    .restaurant-details p {
+      margin: 7px 0;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .open {
+      color: #15803d !important;
+      font-weight: bold;
+    }
+
+    .order-btn {
+      display: block;
+      width: 100%;
+      margin-top: 15px;
+      padding: 11px;
+      border: none;
+      border-radius: 5px;
+      background: #0f766e;
+      color: white;
+      text-align: center;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .order-btn:hover { background: #115e59; }
+
+    footer {
+      padding: 18px;
+      text-align: center;
+      color: white;
+      background: #134e4a;
+    }
+
+    @media (max-width: 800px) {
+      .restaurant-grid { grid-template-columns: 1fr; }
+
+      header {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">L<span>D</span>D</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="restaurants.html">Food</a>
+      <a href="login-register.html">Login</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Discover Nearby Restaurants</h1>
+    <p>Order delicious food from local restaurants, 24/7.</p>
+
+    <div class="search-box">
+      <input type="text" id="restaurantSearch"
+             placeholder="Search restaurant or food item..."
+             onkeyup="searchRestaurants()">
+      <button onclick="searchRestaurants()">Search</button>
+    </div>
+  </section>
+
+  <main class="container">
+    <h2>Nearby Restaurants</h2>
+    <br>
+
+    <div class="restaurant-grid" id="restaurantList">
+
+      <div class="restaurant-card" data-name="Spice Garden Restaurant">
+        <div class="restaurant-image">🍛</div>
+        <div class="restaurant-details">
+          <h3>Spice Garden Restaurant</h3>
+          <p>⭐ 4.5 | Indian, Chinese, Fast Food</p>
+          <p>📍 1.2 km away | 🕒 25–35 min</p>
+          <p class="open">● Open Now</p>
+          <a class="order-btn" href="food-order.html?restaurant=Spice%20Garden%20Restaurant">
+            View Menu & Order
+          </a>
+        </div>
+      </div>
+
+      <div class="restaurant-card" data-name="Burger Hub">
+        <div class="restaurant-image">🍔</div>
+        <div class="restaurant-details">
+          <h3>Burger Hub</h3>
+          <p>⭐ 4.3 | Burgers, Pizza, Snacks</p>
+          <p>📍 1.8 km away | 🕒 20–30 min</p>
+          <p class="open">● Open Now</p>
+          <a class="order-btn" href="food-order.html?restaurant=Burger%20Hub">
+            View Menu & Order
+          </a>
+        </div>
+      </div>
+
+      <div class="restaurant-card" data-name="Annapurna Veg Restaurant">
+        <div class="restaurant-image">🥗</div>
+        <div class="restaurant-details">
+          <h3>Annapurna Veg Restaurant</h3>
+          <p>⭐ 4.6 | South Indian, North Indian</p>
+          <p>📍 2.0 km away | 🕒 30–40 min</p>
+          <p class="open">● Open Now</p>
+          <a class="order-btn" href="food-order.html?restaurant=Annapurna%20Veg%20Restaurant">
+            View Menu & Order
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>© 2026 Local Discover and Deliver | Food delivery available 24/7</footer>
+
+  <script>
+    function searchRestaurants() {
+      const text = document.getElementById("restaurantSearch").value.toLowerCase();
+      const restaurants = document.querySelectorAll(".restaurant-card");
+
+      restaurants.forEach(restaurant => {
+        const restaurantName = restaurant.getAttribute("data-name").toLowerCase();
+
+        if (restaurantName.includes(text)) {
+          restaurant.style.display = "block";
+        } else {
+          restaurant.style.display = "none";
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

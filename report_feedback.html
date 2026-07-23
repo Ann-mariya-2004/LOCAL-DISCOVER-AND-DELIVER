@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LDD | Report & Feedback</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f7f8;
+      color: #222;
+    }
+
+    header {
+      background: #0f766e;
+      color: white;
+      padding: 15px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #facc15;
+    }
+
+    nav a {
+      margin-left: 20px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .page-title {
+      padding: 38px 20px;
+      text-align: center;
+      color: white;
+      background: linear-gradient(135deg, #134e4a, #0f766e);
+    }
+
+    .page-title h1 {
+      margin: 0 0 10px;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 35px auto;
+      padding: 0 20px;
+    }
+
+    .form-box {
+      overflow: hidden;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.1);
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .tabs button {
+      width: 50%;
+      padding: 17px;
+      border: none;
+      background: white;
+      color: #666;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .tabs button.active {
+      color: #0f766e;
+      border-bottom: 3px solid #0f766e;
+    }
+
+    .form-content {
+      display: none;
+      padding: 30px;
+    }
+
+    .form-content.active {
+      display: block;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #115e59;
+    }
+
+    .description {
+      margin-bottom: 25px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 7px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline-color: #0f766e;
+      font-size: 14px;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 22px;
+      padding: 13px;
+      border: none;
+      border-radius: 6px;
+      background: #0f766e;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background: #115e59;
+    }
+
+    .rating {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+      gap: 5px;
+    }
+
+    .rating input {
+      display: none;
+    }
+
+    .rating label {
+      margin: 0;
+      color: #ccc;
+      font-size: 35px;
+      cursor: pointer;
+    }
+
+    .rating input:checked ~ label,
+    .rating label:hover,
+    .rating label:hover ~ label {
+      color: #f59e0b;
+    }
+
+    .note {
+      margin-top: 20px;
+      padding: 13px;
+      border-radius: 6px;
+      background: #e6fffb;
+      color: #115e59;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    footer {
+      margin-top: 45px;
+      padding: 18px;
+      text-align: center;
+      background: #134e4a;
+      color: white;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      nav a {
+        margin: 0 8px;
+      }
+
+      .form-content {
+        padding: 24px 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">L<span>D</span>D</div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#">My Orders</a>
+      <a href="report-feedback.html">Help</a>
+      <a href="login-register.html">Login</a>
+    </nav>
+  </header>
+
+  <section class="page-title">
+    <h1>Help & Support</h1>
+    <p>Report an issue or share your experience with LDD.</p>
+  </section>
+
+  <main class="container">
+    <div class="form-box">
+
+      <div class="tabs">
+        <button class="tab-button active" onclick="showTab('report', this)">
+          Report an Issue
+        </button>
+        <button class="tab-button" onclick="showTab('feedback', this)">
+          Give Feedback
+        </button>
+      </div>
+
+      <!-- Report Form -->
+      <section class="form-content active" id="report">
+        <h2>Submit a Report</h2>
+        <p class="description">
+          Tell us about an issue related to your order, payment, vendor, or delivery.
+        </p>
+
+        <form onsubmit="submitReport(event)">
+          <label for="orderId">Order ID</label>
+          <input type="text" id="orderId" placeholder="Example: LDD-1025" required>
+
+          <label for="issueType">Issue Type</label>
+          <select id="issueType" required>
+            <option value="">Select an issue</option>
+            <option>Order not received</option>
+            <option>Wrong item received</option>
+            <option>Print / photocopy issue</option>
+            <option>Payment issue</option>
+            <option>Delivery partner issue</option>
+            <option>Vendor issue</option>
+            <option>Other</option>
+          </select>
+
+          <label for="reportMessage">Describe Your Issue</label>
+          <textarea id="reportMessage"
+            placeholder="Explain the problem in detail..." required></textarea>
+
+          <label for="reportImage">Upload Proof (Optional)</label>
+          <input type="file" id="reportImage" accept=".jpg,.jpeg,.png,.pdf">
+
+          <button class="submit-btn" type="submit">Submit Report</button>
+        </form>
+
+        <div class="note">
+          Your report will be reviewed by the LDD support team. You will receive an update soon.
+        </div>
+      </section>
+
+      <!-- Feedback Form -->
+      <section class="form-content" id="feedback">
+        <h2>Share Your Feedback</h2>
+        <p class="description">
+          Your feedback helps us improve local services and delivery experience.
+        </p>
+
+        <form onsubmit="submitFeedback(event)">
+          <label for="feedbackOrderId">Order ID (Optional)</label>
+          <input type="text" id="feedbackOrderId" placeholder="Example: LDD-1025">
+
+          <label>Rate Your Experience</label>
+          <div class="rating">
+            <input type="radio" id="star5" name="rating" value="5" required>
+            <label for="star5">★</label>
+
+            <input type="radio" id="star4" name="rating" value="4">
+            <label for="star4">★</label>
+
+            <input type="radio" id="star3" name="rating" value="3">
+            <label for="star3">★</label>
+
+            <input type="radio" id="star2" name="rating" value="2">
+            <label for="star2">★</label>
+
+            <input type="radio" id="star1" name="rating" value="1">
+            <label for="star1">★</label>
+          </div>
+
+          <label for="feedbackType">Feedback Category</label>
+          <select id="feedbackType" required>
+            <option value="">Select category</option>
+            <option>Food Order</option>
+            <option>Grocery Order</option>
+            <option>Print / Photocopy Service</option>
+            <option>Delivery Service</option>
+            <option>Application Experience</option>
+          </select>
+
+          <label for="feedbackMessage">Your Feedback</label>
+          <textarea id="feedbackMessage"
+            placeholder="Write your feedback or suggestions..." required></textarea>
+
+          <button class="submit-btn" type="submit">Send Feedback</button>
+        </form>
+
+        <div class="note">
+          Thank you for helping Local Discover and Deliver become better.
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    © 2026 Local Discover and Deliver | Support available 24/7
+  </footer>
+
+  <script>
+    function showTab(tabName, button) {
+      document.querySelectorAll(".form-content").forEach(tab => {
+        tab.classList.remove("active");
+      });
+
+      document.querySelectorAll(".tab-button").forEach(tabButton => {
+        tabButton.classList.remove("active");
+      });
+
+      document.getElementById(tabName).classList.add("active");
+      button.classList.add("active");
+    }
+
+    function submitReport(event) {
+      event.preventDefault();
+
+      const orderId = document.getElementById("orderId").value;
+      const issueType = document.getElementById("issueType").value;
+
+      alert(
+        "Report submitted successfully!\n\n" +
+        "Order ID: " + orderId + "\n" +
+        "Issue: " + issueType
+      );
+
+      event.target.reset();
+    }
+
+    function submitFeedback(event) {
+      event.preventDefault();
+
+      const rating = document.querySelector('input[name="rating"]:checked').value;
+      const category = document.getElementById("feedbackType").value;
+
+      alert(
+        "Thank you for your feedback!\n\n" +
+        "Rating: " + rating + " star(s)\n" +
+        "Category: " + category
+      );
+
+      event.target.reset();
+    }
+  </script>
+
+</body>
+</html>
