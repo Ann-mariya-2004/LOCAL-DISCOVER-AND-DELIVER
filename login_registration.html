@@ -1,9 +1,11 @@
+<!-- TEST 123 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LDD | Login & Registration</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     * {
       box-sizing: border-box;
@@ -193,8 +195,9 @@
         <h2>Welcome Back</h2>
         <p class="subtitle">Login to continue with LDD.</p>
 
-        <input type="email" id="loginEmail" placeholder="Email Address" required>
-        <input type="password" id="loginPassword" placeholder="Password" required>
+        <input type="email" id="loginEmail" name="email" placeholder="Email Address" required>
+
+        <input type="password" id="loginPassword" name="password" placeholder="Password" required>
 
         <div class="checkbox-row">
           <input type="checkbox" id="remember">
@@ -210,7 +213,7 @@
         <h2>Create Account</h2>
         <p class="subtitle">Join LDD and access local services.</p>
 
-        <input type="text" id="fullName" name="fullName" required>
+       <input type="text" id="fullName" name="fullName" placeholder="Full Name" required>
         <input type="email" id="registerEmail" name="email" placeholder="Email Address" required>
         <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
         <input type="text" id="address" name="address" placeholder="Address" required>
@@ -236,46 +239,225 @@
   </div>
 
   <script>
-    function showForm(formName) {
-      document.getElementById("loginForm").classList.remove("active");
-      document.getElementById("registerForm").classList.remove("active");
+   // =======================
+// Show Login / Register Form
+// =======================
 
-      document.querySelectorAll(".tab-btn").forEach(button => {
+function showForm(formName) {
+    document.getElementById("loginForm").classList.remove("active");
+    document.getElementById("registerForm").classList.remove("active");
+
+    document.querySelectorAll(".tab-btn").forEach((button) => {
         button.classList.remove("active");
-      });
+    });
 
-      if (formName === "login") {
+    if (formName === "login") {
         document.getElementById("loginForm").classList.add("active");
         document.querySelectorAll(".tab-btn")[0].classList.add("active");
-      } else {
+    } else {
         document.getElementById("registerForm").classList.add("active");
         document.querySelectorAll(".tab-btn")[1].classList.add("active");
-      }
     }
+}
 
-    function loginUser(event) {
-      event.preventDefault();
+// =======================
+// Login
+// =======================
+function loginUser(event) {
 
-      const email = document.getElementById("loginEmail").value;
-      alert("Login successful for: " + email);
+    event.preventDefault();
 
-      // Later, redirect after PHP/MySQL login:
-      // window.location.href = "dashboard.php";
-    }
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
 
-    function registerUser(event) {
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
 
+    Swal.fire({
+        title: "Logging in...",
+        text: "Please wait...",
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    fetch("backend/login.php", {
+        method: "POST",
+        body: formData
+    })
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        Swal.close();
+
+        if (data.status === "success") {
+
+            Swal.fire({
+                icon: "success",
+                title: "Login Successful",
+                text: "Welcome " + data.name,
+                confirmButtonColor: "#0F766E"
+            }).then(() => {
+
+                // Temporary redirect
+                window.location.href = "dashboard.php";
+
+            });
+
+        } else {
+
+            Swal.fire({
+                icon: "error",
+                title: "Login Failed",
+                text: data.message,
+                confirmButtonColor: "#0F766E"
+            });
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        Swal.close();
+
+        Swal.fire({
+            icon: "error",
+            title: "Server Error",
+            text: "Something went wrong.",
+            confirmButtonColor: "#0F766E"
+        });
+
+    });
+
+}
+
+// =======================
+// Registration
+// =======================
+function registerUser(event) {
+    event.preventDefault();
+
+    const fullName = document.getElementById("fullName").value.trim();
+    const email = document.getElementById("registerEmail").value.trim();
+    const phone = document.getElementById("phone").value.trim();
     const password = document.getElementById("registerPassword").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
 
-    if (password !== confirmPassword) {
-        event.preventDefault();
-        alert("Passwords do not match.");
+    // Password Length
+    if (password.length < 8) {
+        Swal.fire({
+            icon: "warning",
+            title: "Weak Password",
+            text: "Password must contain at least 8 characters.",
+            confirmButtonColor: "#0F766E"
+        });
         return;
     }
 
-    
+    // Password Match
+    if (password !== confirmPassword) {
+        Swal.fire({
+            icon: "error",
+            title: "Password Mismatch",
+            text: "Passwords do not match!",
+            confirmButtonColor: "#0F766E"
+        });
+        return;
+    }
+
+    // Phone Validation
+    if (!/^[0-9]{10}$/.test(phone)) {
+        Swal.fire({
+            icon: "warning",
+            title: "Invalid Phone Number",
+            text: "Please enter a valid 10-digit mobile number.",
+            confirmButtonColor: "#0F766E"
+        });
+        return;
+    }
+
+    // Email Validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+        Swal.fire({
+            icon: "warning",
+            title: "Invalid Email",
+            text: "Please enter a valid email address.",
+            confirmButtonColor: "#0F766E"
+        });
+        return;
+    }
+
+    const form = document.getElementById("registerForm");
+    const formData = new FormData(form);
+
+    Swal.fire({
+        title: "Creating Account...",
+        text: "Please wait...",
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    fetch("backend/register.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        Swal.close();
+
+        if (data.status === "success") {
+
+            Swal.fire({
+                icon: "success",
+                title: "Registration Successful",
+                text: data.message,
+                confirmButtonText: "Go to Login",
+                confirmButtonColor: "#0F766E"
+            }).then(() => {
+                form.reset();
+                showForm("login");
+            });
+
+        } else {
+
+            Swal.fire({
+                icon: "error",
+                title: "Registration Failed",
+                text: data.message,
+                confirmButtonColor: "#0F766E"
+            });
+
+        }
+
+    })
+    .catch(error => {
+
+        console.error(error);
+
+        Swal.close();
+
+        Swal.fire({
+            icon: "error",
+            title: "Server Error",
+            text: "Something went wrong. Please try again.",
+            confirmButtonColor: "#0F766E"
+        });
+
+    });
 }
+
   </script>
 
 </body>
