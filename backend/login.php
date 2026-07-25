@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 header("Content-Type: application/json");
 
 include "db.php";
@@ -25,6 +27,12 @@ if (mysqli_num_rows($result) == 1) {
 
     // Verify hashed password
     if (password_verify($password, $user["password"])) {
+
+
+        $_SESSION["user_id"] = $user["id"];
+        $_SESSION["name"] = $user["name"];
+        $_SESSION["email"] = $user["email"];
+        $_SESSION["role"] = $user["role"];
 
         echo json_encode([
             "status" => "success",

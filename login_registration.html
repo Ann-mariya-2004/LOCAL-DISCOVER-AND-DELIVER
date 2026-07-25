@@ -265,11 +265,24 @@ function showForm(formName) {
 // =======================
 function loginUser(event) {
 
-    event.preventDefault();
+    event.preventDefault();// form refresh prevent
 
     const email = document.getElementById("loginEmail").value.trim();
     const password = document.getElementById("loginPassword").value;
+    if(email === "" || password === ""){
 
+    Swal.fire({
+
+        icon:"warning",
+        title:"Missing Details",
+        text:"Please enter email and password",
+        confirmButtonColor:"#0F766E"
+
+    });
+
+    return;
+
+}
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
