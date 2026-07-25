@@ -178,10 +178,11 @@ h1{
 </p>
 
 
-<button class="order-btn">
-Order Now
-</button>
 
+
+<a href="food_order.php?id=<?php echo $food['id']; ?>" class="order-btn">
+Order Now
+</a>
 
 
 </div>
