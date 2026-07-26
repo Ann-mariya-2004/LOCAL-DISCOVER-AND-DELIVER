@@ -332,6 +332,24 @@ body{
 
 }
 
+.location-box{
+
+    background:#f0fdfa;
+    padding:25px;
+    border-radius:15px;
+    margin-bottom:30px;
+
+}
+
+.location-box input{
+
+    width:60%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+
+}
+
 </style>
 
 
@@ -413,7 +431,25 @@ Local Discover & Deliver - Your local services at one place.
 
 </div>
 
+<div class="location-box">
 
+<h3>📍 Current Location</h3>
+
+<p id="locationText">Location not detected.</p>
+
+<button onclick="getLocation()" class="service-btn">
+Use My Location
+</button>
+
+<br><br>
+
+<input type="text" id="searchInput" placeholder="Search restaurant, food or print shop">
+
+<button onclick="searchService()" class="service-btn">
+Search
+</button>
+
+</div>
 
 
 <!--<div class="user-card">
@@ -451,10 +487,11 @@ Food Services
 Discover nearby food services.
 </p>
 
-<a href="food.php" class="service-btn">
-    Explore
-</a>
+<a href="restaurants.html" class="service-btn">
 
+Explore
+
+</a>
 </div>
 
 
@@ -529,6 +566,65 @@ function openProfile(){
     window.location="profile.php";
 
 }
+
+function getLocation(){
+
+    if(navigator.geolocation){
+
+        navigator.geolocation.getCurrentPosition(showPosition);
+
+    }
+
+    else{
+
+        alert("Geolocation is not supported.");
+
+    }
+
+}
+
+function showPosition(position){
+
+    let lat=position.coords.latitude;
+
+    let lon=position.coords.longitude;
+
+    fetch("https://nominatim.openstreetmap.org/reverse?format=json&lat="+lat+"&lon="+lon)
+
+    .then(response=>response.json())
+
+    .then(data=>{
+
+        document.getElementById("locationText").innerHTML=data.display_name;
+
+    });
+
+}
+
+function searchService(){
+
+    let text=document.getElementById("searchInput").value.toLowerCase();
+
+    if(text.includes("food") || text.includes("restaurant")){
+
+        window.location="food.php";
+
+    }
+
+    else if(text.includes("print")){
+
+        window.location="print_order.html";
+
+    }
+
+    else{
+
+        alert("No matching service found.");
+
+    }
+
+}
+
 
 </script>
 

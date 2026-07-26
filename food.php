@@ -13,12 +13,15 @@ if(!isset($_SESSION["user_id"])){
 }
 
 
-// Fetch food items
+// Get restaurant id
 
-$sql = "SELECT * FROM food_items";
+$restaurant_id = isset($_GET["restaurant_id"]) ? $_GET["restaurant_id"] : 0;
 
-$result = mysqli_query($conn,$sql);
+// Fetch food items of selected restaurant
 
+$sql = "SELECT * FROM food_items WHERE restaurant_id='$restaurant_id'";
+
+$result = mysqli_query($conn, $sql);
 
 ?>
 
