@@ -1,3 +1,12 @@
 oracleJdk-26/
 *.log
+
+# Environment and credentials
 .env
+.env.*
+
+# Local database backups
+# SQL files are allowed so the sanitized demo database can be committed.
+
+# Uploaded files and private data
+uploads/

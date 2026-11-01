@@ -1,4 +1,4 @@
-<!-- TEST 123 -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -269,6 +269,8 @@ function loginUser(event) {
 
     const email = document.getElementById("loginEmail").value.trim();
     const password = document.getElementById("loginPassword").value;
+
+    // Empty field validation
     if(email === "" || password === ""){
 
     Swal.fire({
@@ -287,6 +289,7 @@ function loginUser(event) {
     formData.append("email", email);
     formData.append("password", password);
 
+     // Loading message
     Swal.fire({
         title: "Logging in...",
         text: "Please wait...",
@@ -304,29 +307,40 @@ function loginUser(event) {
     .then(response => response.json())
 
     .then(data => {
-
-        Swal.close();
+    //console.log("LOGIN RESPONSE:", data);
+    //console.log("ROLE:", data.role);
+    Swal.close();
 
         if (data.status === "success") {
+            //console.log("ROLE FROM DATABASE:", data.role);
 
-            Swal.fire({
-                icon: "success",
-                title: "Login Successful",
-                text: "Welcome " + data.name,
-                confirmButtonColor: "#0F766E"
-            }).then(() => {
-
-                // Temporary redirect
-                window.location.href = "dashboard.php";
-
-            });
+            // Normalize role
+          const role = String(data.role || "").trim().toLowerCase();
+          //alert("Login role received: " + data.role);
+// Direct role-based redirect
+     if (role === "vendor") {
+    window.location.href = "vendor/vendor_dashboard.php";
+} else if (role === "customer") {
+    window.location.href = "dashboard.php";
+} else if (role === "delivery partner") {
+    window.location.href = "DeliveryPartner/delivery_dashboard.php";
+} else if (role === "admin") {
+    window.location.href = "admin/admin_dashboard.php";
+} else {
+    Swal.fire({
+        icon: "error",
+        title: "Invalid Role",
+        text: "Your account role is not configured correctly.",
+                    confirmButtonColor: "#0F766E"
+    });
+}
 
         } else {
 
             Swal.fire({
                 icon: "error",
                 title: "Login Failed",
-                text: data.message,
+                text: data.message || "Invalid email or password.",
                 confirmButtonColor: "#0F766E"
             });
 
@@ -336,14 +350,14 @@ function loginUser(event) {
 
     .catch(error => {
 
-        console.error(error);
+        console.error("Login error",error);
 
         Swal.close();
 
         Swal.fire({
             icon: "error",
             title: "Server Error",
-            text: "Something went wrong.",
+            text: "Unable to connect to the server. Please try again.",
             confirmButtonColor: "#0F766E"
         });
 

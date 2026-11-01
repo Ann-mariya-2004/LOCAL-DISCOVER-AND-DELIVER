@@ -1,22 +1,32 @@
 <?php
-
 session_start();
 
+// Clear all session data
+$_SESSION = [];
 
-// Remove all session data
+// Remove the session cookie
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
 
-session_unset();
+    setcookie(
+        session_name(),
+        "",
+        time() - 42000,
+        $params["path"],
+        $params["domain"],
+        $params["secure"],
+        $params["httponly"]
+    );
+}
 
-
-// Destroy session
-
+// Destroy the session
 session_destroy();
 
+// Prevent the browser from reusing a cached dashboard page
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
 
-// Redirect to login page
-
+// Redirect in the same tab
 header("Location: ../login_registration.html");
-
 exit();
-
-?>
